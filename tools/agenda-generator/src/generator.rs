@@ -58,21 +58,17 @@ impl Generator {
             chrono::Utc::now().format("%Y-%m-%d")
         )?;
 
-        self.fcps(String::from("T-libs-api"))?;
         self.fcps(String::from("T-libs"))?;
 
         GithubQuery::new("Critical")
             .labels(&["T-libs", "P-critical"])
-            .labels(&["T-libs-api", "P-critical"])
             .repo("rust-lang/rust")
             .repo("rust-lang/rfcs")
             .write(&mut self)?;
 
         GithubQuery::new("Backports")
             .labels(&["T-libs", "stable-nominated"])
-            .labels(&["T-libs-api", "stable-nominated"])
             .labels(&["T-libs", "beta-nominated"])
-            .labels(&["T-libs-api", "beta-nominated"])
             .exclude_labels(&["beta-accepted"])
             .state(State::Any)
             .repo("rust-lang/rust")
@@ -81,14 +77,12 @@ impl Generator {
 
         GithubQuery::new("Prioritization Requested")
             .labels(&["T-libs", "I-prioritize"])
-            .labels(&["T-libs-api", "I-prioritize"])
             .repo("rust-lang/rust")
             .repo("rust-lang/rfcs")
             .write(&mut self)?;
 
         GithubQuery::new("Nominated")
             .labels(&["I-libs-nominated"])
-            .labels(&["I-libs-api-nominated"])
             .repo("rust-lang/rust")
             .repo("rust-lang/rfcs")
             .repo("rust-lang/libs-team")
@@ -96,28 +90,21 @@ impl Generator {
 
         GithubQuery::new("waiting on team")
             .labels(&["S-waiting-on-t-libs"])
-            .labels(&["S-waiting-on-t-libs-api"])
             .repo("rust-lang/rust")
             .repo("rust-lang/rfcs")
             .write(&mut self)?;
 
         GithubQuery::new("needs decision")
             .labels(&["T-libs", "I-needs-decision"])
-            .labels(&["T-libs-api", "I-needs-decision"])
             .repo("rust-lang/rust")
             .write(&mut self)?;
 
         GithubQuery::new("Regressions")
             .labels(&["T-libs", "regression-untriaged"])
-            .labels(&["T-libs-api", "regression-untriaged"])
             .labels(&["T-libs", "regression-from-stable-to-stable"])
-            .labels(&["T-libs-api", "regression-from-stable-to-stable"])
             .labels(&["T-libs", "regression-from-stable-to-beta"])
-            .labels(&["T-libs-api", "regression-from-stable-to-beta"])
             .labels(&["T-libs", "regression-from-stable-to-nightly"])
-            .labels(&["T-libs-api", "regression-from-stable-to-nightly"])
             .exclude_labels(&["I-libs-nominated"])
-            .exclude_labels(&["I-libs-api-nominated"])
             .repo("rust-lang/rust")
             .repo("rust-lang/rfcs")
             .write(&mut self)?;
